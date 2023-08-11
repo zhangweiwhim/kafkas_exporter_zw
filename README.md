@@ -37,3 +37,24 @@
   ]
 }
 ```
+## prometheus config add
+```xml
+- job_name: kafkaZw
+  honor_timestamps: true
+  scrape_interval: 1m
+  scrape_timeout: 10s
+  metrics_path: /metrics
+  scheme: http
+  follow_redirects: true
+  relabel_configs:
+  - source_labels: [instance_name]
+    separator: ;
+    regex: (.*)
+    target_label: __metrics_path__
+    replacement: /metrics/$1
+    action: replace
+  http_sd_configs:
+  - follow_redirects: true
+    refresh_interval: 1m
+    url: http://XXX:30007/kafka-sd-targets
+```
